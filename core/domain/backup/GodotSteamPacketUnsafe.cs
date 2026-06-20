@@ -6,12 +6,12 @@ namespace facepunchsteamworkstest.core.domain.steam_multiplayer;
 
 public class GodotSteamPacketUnsafe: IDisposable
 {
-    static readonly int HeaderSize = sizeof(MessageTypeEnum) + sizeof(SendType) + sizeof(int);
+    static readonly int HeaderSize = sizeof(MessageType) + sizeof(SendType) + sizeof(int);
 
     private IntPtr _packetData;
     private bool disposed;
 
-    public MessageTypeEnum MessageType { get; set; }
+    public MessageType MessageType { get; set; }
     public IntPtr Payload { get; set; }
     public int PayloadSize { get; set; }
     public int Channel { get; set; }
@@ -23,7 +23,7 @@ public class GodotSteamPacketUnsafe: IDisposable
     public static GodotSteamPacketUnsafe Decode(IntPtr buffer, int payloadSize, ushort channel = 0)
     {
         GodotSteamPacketUnsafe godotSteamPacket = new GodotSteamPacketUnsafe();
-        godotSteamPacket.MessageType = (MessageTypeEnum)Marshal.ReadByte(buffer);
+        godotSteamPacket.MessageType = (MessageType)Marshal.ReadByte(buffer);
         godotSteamPacket.SendType = (SendType)Marshal.ReadInt32(buffer, 1);
         godotSteamPacket.From = Marshal.ReadInt32(buffer, 5);
         godotSteamPacket.Payload = Marshal.ReadIntPtr(buffer, 9);

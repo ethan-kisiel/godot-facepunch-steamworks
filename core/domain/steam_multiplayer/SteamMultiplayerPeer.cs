@@ -127,13 +127,13 @@ public partial class SteamMultiplayerPeer: MultiplayerPeerExtension
         _connectionManager?.Receive();
     }
     
-    public override Error _PutPacketScript(byte[] pBuffer) // Packet is being given to us to send over the wire
+    public override Error _PutPacketScript(byte[] buffer) // Packet is being given to us to send over the wire
     {
         GodotSteamPacket godotSteamPacket = new GodotSteamPacket();
         
-        godotSteamPacket.MessageType = MessageTypeEnum.GameMessage;
+        godotSteamPacket.MessageType = MessageType.GameMessage;
         godotSteamPacket.SendType = _sendType;
-        godotSteamPacket.Payload = pBuffer;
+        godotSteamPacket.Payload = buffer;
         godotSteamPacket.Channel = (ushort) _transferChannel;
         godotSteamPacket.From = GetUniqueId();
         

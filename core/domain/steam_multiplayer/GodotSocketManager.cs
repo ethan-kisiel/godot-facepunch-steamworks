@@ -32,7 +32,7 @@ public class GodotSocketManager : SocketManager
 
         GodotSteamPacket godotSteamPacket = new GodotSteamPacket();
         
-        godotSteamPacket.MessageType = MessageTypeEnum.NetIdHandshake;
+        godotSteamPacket.MessageType = MessageType.NetIdHandshake;
         godotSteamPacket.SendType = SendType.Reliable;
         godotSteamPacket.From = 1;
         

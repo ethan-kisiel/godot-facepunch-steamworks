@@ -26,7 +26,7 @@ public class GodotConnectionManager: ConnectionManager
         
         GD.Print($"MESSAGE TYPE: {godotSteamPacket.MessageType}");
 
-        if (godotSteamPacket.MessageType == MessageTypeEnum.NetIdHandshake)
+        if (godotSteamPacket.MessageType == MessageType.NetIdHandshake)
         {
             int uniqueId = System.Buffers.Binary.BinaryPrimitives
                 .ReadInt32LittleEndian(godotSteamPacket.Payload.AsSpan(0, 4));
@@ -34,7 +34,7 @@ public class GodotConnectionManager: ConnectionManager
             Peer.SetUniqueId(uniqueId);
             GD.Print($"RECEIVED PEER ID: {Peer.GetUniqueId()}");
         }
-        else if (godotSteamPacket.MessageType == MessageTypeEnum.GameMessage)
+        else if (godotSteamPacket.MessageType == MessageType.GameMessage)
         {
             Peer.IncomingPackets.Enqueue(godotSteamPacket);
         }

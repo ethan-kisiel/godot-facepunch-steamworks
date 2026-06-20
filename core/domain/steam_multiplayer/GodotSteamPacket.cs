@@ -1,24 +1,22 @@
 using System;
-using System.Runtime.CompilerServices;
-using System.Text.Json.Serialization;
 using Steamworks.Data;
 
 namespace facepunchsteamworkstest.core.domain.steam_multiplayer;
 
 public struct GodotSteamPacket
 {
-    static readonly int HeaderSize = sizeof(MessageTypeEnum) + sizeof(SendType) + sizeof(int);
+    static readonly int HeaderSize = sizeof(MessageType) + sizeof(SendType) + sizeof(int);
     
-    public MessageTypeEnum MessageType;
-    public byte[] Payload;
-    public int Channel;
-    public int From;
-    public SendType SendType;
+    public MessageType MessageType { get; set; }
+    public byte[] Payload { get; set; }
+    public int Channel { get; set; }
+    public int From { get; set; }
+    public SendType SendType { get; set; }
     
     public static GodotSteamPacket Decode(byte[] buffer, ushort channel = 0)
     {
         GodotSteamPacket godotSteamPacket = new GodotSteamPacket();
-        godotSteamPacket.MessageType = (MessageTypeEnum)buffer[0];
+        godotSteamPacket.MessageType = (MessageType)buffer[0];
         godotSteamPacket.SendType = (SendType)System.Buffers.Binary.BinaryPrimitives.ReadInt32LittleEndian(buffer.AsSpan(1, 4));
         godotSteamPacket.From = System.Buffers.Binary.BinaryPrimitives.ReadInt32LittleEndian(buffer.AsSpan(5, 4));
         godotSteamPacket.Payload = buffer[HeaderSize..];
