@@ -1,0 +1,23 @@
+﻿<Project Sdk="Godot.NET.Sdk/4.6.1">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+		<RootNamespace>facepunchsteamworkstest</RootNamespace>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="Facepunch.Steamworks.Win64">
+			<HintPath>Facepunch.Steamworks.Win64.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Facepunch.Steamworks.Win64.dll" CopyToOutputDirectory="Always" />
+		<Content Include="steam_api64.dll" CopyToOutputDirectory="Always" />
+		<Content Include="Utils\ByteSerializationUtil.cs.uid" />
+		<Content Include="Utils\CompressionUtil.cs.uid" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="K4os.Compression.LZ4" Version="1.3.8" />
+	</ItemGroup>
+</Project>

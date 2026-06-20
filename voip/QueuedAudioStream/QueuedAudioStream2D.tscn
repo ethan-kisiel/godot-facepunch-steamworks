@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://ce85an6mvbltd"]
+
+[ext_resource type="Script" uid="uid://cbs8du45cnhj0" path="res://voip/QueuedAudioStream/QueuedAudioStream.cs" id="1_34022"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_34022"]
+mix_rate_mode = 1
+
+[node name="QueuedAudioStream2d" type="Node" unique_id=590744400 node_paths=PackedStringArray("AudioStreamPlayer")]
+script = ExtResource("1_34022")
+AudioStreamPlayer = NodePath("AudioStreamPlayer2D")
+metadata/_custom_type_script = "uid://cbs8du45cnhj0"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1385142454]
+stream = SubResource("AudioStreamGenerator_34022")
+volume_db = 24.0

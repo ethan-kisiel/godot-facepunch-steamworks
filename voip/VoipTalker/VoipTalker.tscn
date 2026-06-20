@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d3inox5nmknd2"]
+
+[ext_resource type="Script" uid="uid://8oewvo1h0jlg" path="res://voip/VoipTalker/VoipTalker.cs" id="1_cjwvn"]
+[ext_resource type="PackedScene" uid="uid://e88sqix06b72" path="res://voip/MicrophoneStreamPlayer/MicrophoneStreamPlayer.tscn" id="1_r0a8h"]
+[ext_resource type="PackedScene" uid="uid://ce85an6mvbltd" path="res://voip/QueuedAudioStream/QueuedAudioStream2D.tscn" id="3_a0ogc"]
+
+[node name="VoipTalker" type="Node" unique_id=780980214 node_paths=PackedStringArray("MicrophoneStreamPlayer", "QueuedAudioStream")]
+script = ExtResource("1_cjwvn")
+MicrophoneStreamPlayer = NodePath("MicrophoneStreamPlayer")
+QueuedAudioStream = NodePath("QueuedAudioStream2d")
+
+[node name="MicrophoneStreamPlayer" parent="." unique_id=1648559015 instance=ExtResource("1_r0a8h")]
+
+[node name="QueuedAudioStream2d" parent="." unique_id=590744400 instance=ExtResource("3_a0ogc")]

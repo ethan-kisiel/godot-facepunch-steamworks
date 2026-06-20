@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://blwmq3u802cke"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_q2vue"]
+mix_rate = 48000.0
+buffer_length = 0.1
+
+[sub_resource type="CSharpScript" id="CSharpScript_huabx"]
+script/source = "using System.Collections.Generic;
+using System.Linq;
+using Godot;
+using Godot.Collections;
+
+namespace Miserum.Scenes.VOIP.QueuedAudioStream;
+
+public partial class QueuedAudioStream3d : AudioStreamPlayer3D
+{
+    public Queue<Vector2[]> AudioFramesQueue = new();
+    private Array<Vector2> _currentAudioFrames = new();
+
+    public override void _Ready()
+    {
+        if (Multiplayer.IsServer() || IsMultiplayerAuthority())
+        {
+            return;
+        }
+        Play();
+    }
+    
+    public override void _PhysicsProcess(double delta)
+    {
+        if (Multiplayer.IsServer() || IsMultiplayerAuthority())
+        {
+            return;
+        }
+        
+        var audioStreamPlayback = (AudioStreamGeneratorPlayback)GetStreamPlayback();
+
+        if (_currentAudioFrames.Count == 0 && AudioFramesQueue.Count > 0)
+        {
+            _currentAudioFrames = new Array<Vector2>(AudioFramesQueue.Dequeue());
+        }
+        
+        if (_currentAudioFrames.Count > 0)
+        {
+            var availableFrames = audioStreamPlayback.GetFramesAvailable();
+            if (availableFrames == 0)
+            {
+                return;
+            }
+            
+            if (availableFrames >= _currentAudioFrames.Count)
+            {
+                audioStreamPlayback.PushBuffer(_currentAudioFrames.ToArray());
+                _currentAudioFrames.Clear();
+            }
+            else
+            {
+                Array<Vector2> currentAudioFrames = new();
+                for (int i = 0; i < availableFrames; i++)
+                {
+                    currentAudioFrames.Add(_currentAudioFrames[0]);
+                    currentAudioFrames.RemoveAt(0);
+                }
+                
+                audioStreamPlayback.PushBuffer(currentAudioFrames.ToArray());
+            }
+        }
+    }
+}"
+
+[node name="QueuedAudioStreamPlayer3d" type="AudioStreamPlayer3D" unique_id=419093958]
+stream = SubResource("AudioStreamGenerator_q2vue")
+panning_strength = 0.5
+script = SubResource("CSharpScript_huabx")

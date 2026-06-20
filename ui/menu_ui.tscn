@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://cnaln7ua5cc7x"]
+
+[ext_resource type="Script" uid="uid://cefh03kej74dj" path="res://ui/MenuUi.cs" id="1_55kfv"]
+[ext_resource type="Theme" uid="uid://b3kq74llqlv3x" path="res://marketplace/MinimalUI4/MinimalUI.tres" id="1_aqtrf"]
+
+[node name="MenuUi" type="Control" unique_id=1059004812 node_paths=PackedStringArray("SteamIdEdit", "CreateServerButton", "JoinServerButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_aqtrf")
+script = ExtResource("1_55kfv")
+SteamIdEdit = NodePath("AspectRatioContainer/PanelContainer/VBoxContainer/SteamIdField")
+CreateServerButton = NodePath("AspectRatioContainer/PanelContainer/VBoxContainer/HBoxContainer/CreateServerButton")
+JoinServerButton = NodePath("AspectRatioContainer/PanelContainer/VBoxContainer/HBoxContainer/JoinServerButton")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="." unique_id=1081096007]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 1.77
+
+[node name="PanelContainer" type="PanelContainer" parent="AspectRatioContainer" unique_id=250950221]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/PanelContainer" unique_id=791592716]
+layout_mode = 2
+alignment = 1
+
+[node name="SteamIdField" type="LineEdit" parent="AspectRatioContainer/PanelContainer/VBoxContainer" unique_id=362642216]
+layout_mode = 2
+placeholder_text = "SteamId"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/PanelContainer/VBoxContainer" unique_id=238637566]
+layout_mode = 2
+alignment = 1
+
+[node name="CreateServerButton" type="Button" parent="AspectRatioContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=335777334]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Create Server"
+
+[node name="JoinServerButton" type="Button" parent="AspectRatioContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1475629619]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Join Server"

@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://c0c6ggxaevf2p"]
+
+[ext_resource type="Script" uid="uid://bm6rnjirdss63" path="res://debug/multiplayer_debug/PlayerScene.cs" id="1_trhl8"]
+[ext_resource type="PackedScene" uid="uid://d3inox5nmknd2" path="res://voip/VoipTalker/VoipTalker.tscn" id="2_31qon"]
+[ext_resource type="Texture2D" uid="uid://cc2tw2ldkx58r" path="res://icon.svg" id="2_nkpum"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_31qon"]
+properties/0/path = NodePath("NameLabel:text")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[node name="PlayerScene" type="Node2D" unique_id=394514326 node_paths=PackedStringArray("NameLabel", "VoipTalker")]
+script = ExtResource("1_trhl8")
+NameLabel = NodePath("NameLabel")
+VoipTalker = NodePath("VoipTalker")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=387775320]
+position = Vector2(1, 0)
+texture = ExtResource("2_nkpum")
+
+[node name="NameLabel" type="Label" parent="." unique_id=1507960146]
+offset_left = -76.0
+offset_top = -106.0
+offset_right = 76.0
+offset_bottom = -83.0
+text = "UNKNOWN_PLAYER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=181660262]
+replication_config = SubResource("SceneReplicationConfig_31qon")
+
+[node name="VoipTalker" parent="." unique_id=780980214 instance=ExtResource("2_31qon")]
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="." unique_id=235780119]
+remote_path = NodePath("../VoipTalker/QueuedAudioStream2d/AudioStreamPlayer2D")
+
+[editable path="VoipTalker"]
+[editable path="VoipTalker/QueuedAudioStream2d"]

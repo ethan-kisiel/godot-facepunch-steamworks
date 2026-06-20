@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://80ytgpcfltc0"]
+
+[ext_resource type="Script" uid="uid://cbs8du45cnhj0" path="res://voip/QueuedAudioStream/QueuedAudioStream.cs" id="1_a6c3k"]
+
+[node name="QueuedAudioStream" type="Node" unique_id=1182259056]
+script = ExtResource("1_a6c3k")

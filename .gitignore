@@ -1,0 +1,10 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+.idea/
+.vs/
+
+Facepunch.Steamworks.Win64.*
+steam_api.dll
+steam_api64.dll

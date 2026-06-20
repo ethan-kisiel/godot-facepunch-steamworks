@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://e88sqix06b72"]
+
+[ext_resource type="Script" uid="uid://dujj4ajryy4yo" path="res://voip/MicrophoneStreamPlayer/MicrophoneStreamPlayer.cs" id="1_3xvrn"]
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_ih2o5"]
+
+[node name="MicrophoneStreamPlayer" type="AudioStreamPlayer" unique_id=1518932946]
+stream = SubResource("AudioStreamMicrophone_ih2o5")
+bus = &"Record"
+script = ExtResource("1_3xvrn")

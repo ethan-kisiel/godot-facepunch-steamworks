@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://c11lotaji7ikp"]
+
+[ext_resource type="Script" uid="uid://bsq2cces1k2xp" path="res://Main.cs" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://cnaln7ua5cc7x" path="res://ui/menu_ui.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://c0c6ggxaevf2p" path="res://debug/multiplayer_debug/player_scene.tscn" id="2_h2yge"]
+
+[node name="Main" type="Node2D" unique_id=1539592971 node_paths=PackedStringArray("MenuUi")]
+script = ExtResource("1_ig7tw")
+PlayerScene = ExtResource("2_h2yge")
+MenuUi = NodePath("CenterContainer/MenuUi")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=864405206]
+_spawnable_scenes = PackedStringArray("uid://c0c6ggxaevf2p")
+spawn_path = NodePath("..")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=885363085]
+custom_minimum_size = Vector2(600, 600)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = 4.0
+offset_right = 1151.0
+offset_bottom = 647.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="MenuUi" parent="CenterContainer" unique_id=1059004812 instance=ExtResource("2_0xm2m")]
+layout_mode = 2
