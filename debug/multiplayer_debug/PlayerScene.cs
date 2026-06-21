@@ -9,6 +9,8 @@ public partial class PlayerScene : Node2D
 {
 
 	private VoipTalker _voipTalker;
+	private double _tickrate = 20;
+	private double _uptime = 0;
 	
 	[Export] public Label NameLabel;
 	[Export] public Node VoipTalker
@@ -63,8 +65,16 @@ public partial class PlayerScene : Node2D
 		{
 			input.X = int.Clamp(input.X + 1, -1, 1);
 		}
-		
-		Rpc(nameof(MovePlayer), GlobalPosition + input);
+
+		_uptime += delta;
+		if (_uptime > 1 / _tickrate)
+		{
+            Rpc(nameof(MovePlayer), GlobalPosition + input);
+			_uptime = 0;
+        } else
+		{
+            GlobalPosition += input;
+        }
 	}
 
 

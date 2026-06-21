@@ -1,11 +1,13 @@
 using Godot;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace facepunchsteamworkstest.VOIP.MicrophoneStreamPlayer;
 
 public partial class MicrophoneStreamPlayer : AudioStreamPlayer
 {
     [Signal]
-    public delegate void MicrophoneDataEmittedEventHandler(Vector2[] data);
+    public delegate void MicrophoneDataEmittedEventHandler(float[] data);
 
     [Export(PropertyHint.Range, "1,1024")] public int FrameBuffer { get; set; } = 512;
     [Export] public bool IsDebug { get; set; }
@@ -13,6 +15,9 @@ public partial class MicrophoneStreamPlayer : AudioStreamPlayer
 
     private AudioEffectCapture _audioCapture;
     private bool _isPlaying = false;
+
+    private double _uptime = 0;
+    private double _tickrate = 20;
     
     public override void _Ready()
     {
@@ -31,18 +36,15 @@ public partial class MicrophoneStreamPlayer : AudioStreamPlayer
         {
             return;
         }
-        
+        _uptime += delta;
+
         FrameBuffer = _audioCapture.GetFramesAvailable();
-        if (_audioCapture.CanGetBuffer(FrameBuffer))
+        if (_audioCapture.CanGetBuffer(FrameBuffer) && _uptime > 1 / _tickrate)
         {
             var buffer = _audioCapture.GetBuffer(FrameBuffer);
 
-            for (int i = 0; i < buffer.Length; i++)
-            {
-                buffer[i].Y = buffer[i].X;
-            }
-            
-            Rpc(nameof(SendMicrophoneData), buffer);
+            Rpc(nameof(SendMicrophoneData), buffer.Select(vec => vec.X).ToArray());
+            _uptime = 0;
             
             _audioCapture.ClearBuffer();
         }
@@ -63,18 +65,9 @@ public partial class MicrophoneStreamPlayer : AudioStreamPlayer
         }
     }
     
-    /*
-    [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.UnreliableOrdered, CallLocal = false, TransferChannel = 10)]
-    private void SendMicrophoneData(byte[] data, int length)
-    {
-        var audioBuffer = new NetworkedAudioBuffer(CompressionUtil.Decompress(data, length));
-        
-        EmitSignal(SignalName.MicrophoneDataEmitted, audioBuffer.Frames);
-    }
-    */
     
-    [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.UnreliableOrdered, CallLocal = false, TransferChannel = 0)]
-    private void SendMicrophoneData(Vector2[] data)
+    [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable, CallLocal = false, TransferChannel = 0)]
+    private void SendMicrophoneData(float[] data)
     {
         EmitSignal(SignalName.MicrophoneDataEmitted, data);
     }
