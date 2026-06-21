@@ -10,8 +10,6 @@ namespace facepunchsteamworkstest.core.domain.steam_multiplayer;
 
 public class GodotSocketManager : SocketManager
 {
-    private int _nextPeer = 2;
-
     // Sockets
     public Dictionary<int, Connection> Peers { get; set; } = new();
     public Dictionary<Connection, int> ReversePeers { get; set; } = new();
@@ -27,8 +25,9 @@ public class GodotSocketManager : SocketManager
     
     public override void OnConnected(Connection connection, ConnectionInfo info)
     {
-        Peers.Add(_nextPeer, connection);
-        ReversePeers.Add(connection, _nextPeer);
+        var peerId = (int)(info.Identity.SteamId.Value & 0xffffffff);
+        Peers.Add(peerId, connection);
+        ReversePeers.Add(connection, peerId);
 
         GodotSteamPacket godotSteamPacket = new GodotSteamPacket();
         
@@ -36,16 +35,13 @@ public class GodotSocketManager : SocketManager
         godotSteamPacket.SendType = SendType.Reliable;
         godotSteamPacket.From = 1;
         
-        var buffer = new byte[4];
-        System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(buffer.AsSpan(0, 4), _nextPeer);
-
-        godotSteamPacket.Payload = buffer;
+        godotSteamPacket.Payload = [];
 
         SteamMultiplayerPeer.SendMessageOverConnection(connection, godotSteamPacket);
-        
-        GD.Print($"PEER CONNECTED: {info.Identity.SteamId}, {_nextPeer}");
-        Peer.EmitSignal(MultiplayerPeer.SignalName.PeerConnected, _nextPeer);
-        _nextPeer++;
+      
+
+        GD.Print($"PEER CONNECTED: {peerId}");
+        Peer.EmitSignal(MultiplayerPeer.SignalName.PeerConnected, peerId);
         
         base.OnConnected(connection, info);
     }
@@ -67,7 +63,8 @@ public class GodotSocketManager : SocketManager
         Marshal.Copy(data, managed, 0, size);
         
         ReversePeers.TryGetValue(connection, out var  reversePeerId);
-        GodotSteamPacket godotSteamPacket = GodotSteamPacket.Decode(managed, (ushort)channel);
+        var normalizedChannel = (ushort)Math.Clamp(channel, 0, ushort.MaxValue);
+        GodotSteamPacket godotSteamPacket = GodotSteamPacket.Decode(managed, normalizedChannel);
         
         godotSteamPacket.From = reversePeerId;
         

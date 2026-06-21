@@ -11,8 +11,9 @@ public partial class PlayerScene : Node2D
 	private VoipTalker _voipTalker;
 	private double _tickrate = 20;
 	private double _uptime = 0;
-	
-	[Export] public Label NameLabel;
+	private Vector2 _positionTarget = Vector2.Zero;
+
+    [Export] public Label NameLabel;
 	[Export] public Node VoipTalker
 	{
 		get => _voipTalker;
@@ -35,7 +36,11 @@ public partial class PlayerScene : Node2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (GetMultiplayerAuthority() != Multiplayer.GetUniqueId()) return;
+		if (GetMultiplayerAuthority() != Multiplayer.GetUniqueId())
+		{
+			GlobalPosition = GlobalPosition.Lerp(_positionTarget, 0.5f);
+            return;
+		}
 		
 		if (Input.IsActionJustPressed("push_to_talk"))
 		{
@@ -71,16 +76,14 @@ public partial class PlayerScene : Node2D
 		{
             Rpc(nameof(MovePlayer), GlobalPosition + input);
 			_uptime = 0;
-        } else
-		{
-            GlobalPosition += input;
         }
-	}
+        GlobalPosition += input;
+    }
 
 
-	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable, TransferChannel=0)]
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable, TransferChannel=0)]
 	public void MovePlayer(Vector2I newPosition)
 	{
-		GlobalPosition = newPosition;
+		_positionTarget = newPosition;
 	}
 }

@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 using Godot;
 using Steamworks;
@@ -28,10 +27,9 @@ public class GodotConnectionManager: ConnectionManager
 
         if (godotSteamPacket.MessageType == MessageType.NetIdHandshake)
         {
-            int uniqueId = System.Buffers.Binary.BinaryPrimitives
-                .ReadInt32LittleEndian(godotSteamPacket.Payload.AsSpan(0, 4));
-            
-            Peer.SetUniqueId(uniqueId);
+            var steamId = SteamClient.SteamId;
+
+            Peer.SetUniqueId((int)(steamId.Value & 0xffffffff));
             GD.Print($"RECEIVED PEER ID: {Peer.GetUniqueId()}");
         }
         else if (godotSteamPacket.MessageType == MessageType.GameMessage)
