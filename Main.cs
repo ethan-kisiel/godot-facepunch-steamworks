@@ -23,7 +23,7 @@ public partial class Main : Node2D
 			GD.Print($"Name: {SteamClient.Name}, SteamId: {SteamClient.SteamId}");
 			GD.Print($"Steam Initialized: {SteamClient.IsValid}");
 			GD.Print($"Logged On: {SteamClient.IsLoggedOn}");
-			GD.Print($"My ID: {SteamClient.SteamId}");
+			GD.Print($"My ID: {SteamClient.SteamId.Value} : {SteamClient.SteamId.AccountId}");
 		}
 		catch (Exception e)
 		{

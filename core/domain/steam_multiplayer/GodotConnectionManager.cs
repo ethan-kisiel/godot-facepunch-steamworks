@@ -27,9 +27,9 @@ public class GodotConnectionManager: ConnectionManager
 
         if (godotSteamPacket.MessageType == MessageType.NetIdHandshake)
         {
-            var steamId = SteamClient.SteamId;
+            var steamId = SteamClient.SteamId.AccountId;
 
-            Peer.SetUniqueId((int)(steamId.Value & 0xffffffff));
+            Peer.SetUniqueId((int)steamId);
             GD.Print($"RECEIVED PEER ID: {Peer.GetUniqueId()}");
         }
         else if (godotSteamPacket.MessageType == MessageType.GameMessage)

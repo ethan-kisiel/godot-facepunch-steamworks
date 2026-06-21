@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Steamworks.Data;
 
-namespace facepunchsteamworkstest.core.domain.steam_multiplayer;
+namespace facepunchsteamworkstest.core.domain.steam_multiplayer.backup;
 
 public class GodotSteamPacketUnsafe: IDisposable
 {

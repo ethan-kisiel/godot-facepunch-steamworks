@@ -11,7 +11,7 @@ public partial class VoipTalker : Node
     public override void _Ready()
     {
         MicrophoneStreamPlayer.MicrophoneDataEmitted += 
-            data => QueuedAudioStream.AudioFramesQueue.Enqueue(data.Select(val => new Vector2(val, val)).ToArray());
+            data => QueuedAudioStream.AudioFramesQueue.Enqueue(data.Select(val => new Vector2(val / 2, val / 2)).ToArray());
     }
 
     public void SetVoiceEnabled (bool enabled)

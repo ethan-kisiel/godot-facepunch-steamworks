@@ -118,7 +118,7 @@ public partial class SteamMultiplayerPeer: MultiplayerPeerExtension
             return 1;
         }
         
-        return IncomingPackets.Peek().From;
+        return (int)IncomingPackets.Peek().From;
     }
     
     public override void _Poll()
@@ -135,7 +135,7 @@ public partial class SteamMultiplayerPeer: MultiplayerPeerExtension
         godotSteamPacket.SendType = _sendType;
         godotSteamPacket.Payload = buffer;
         godotSteamPacket.Channel = (ushort) _transferChannel;
-        godotSteamPacket.From = GetUniqueId();
+        godotSteamPacket.From = (uint)GetUniqueId();
         
         if (!_isServer)
         {
@@ -154,7 +154,7 @@ public partial class SteamMultiplayerPeer: MultiplayerPeerExtension
                 SendMessageOverConnection(kvp.Value, godotSteamPacket);
             }
         }
-        else if (_socketManager.Peers.TryGetValue(_targetPeer, out var connection))
+        else if (_socketManager.Peers.TryGetValue((uint)_targetPeer, out var connection))
         {
             SendMessageOverConnection(connection, godotSteamPacket);
         }

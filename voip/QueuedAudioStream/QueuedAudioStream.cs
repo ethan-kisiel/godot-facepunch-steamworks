@@ -64,7 +64,7 @@ public partial class QueuedAudioStream : Node
 				for (int i = 0; i < availableFrames; i++)
 				{
 					currentAudioFrames.Add(_currentAudioFrames[0]);
-					currentAudioFrames.RemoveAt(0);
+					_currentAudioFrames.RemoveAt(0);
 				}
                 
 				_audioStreamPlayback.PushBuffer(currentAudioFrames.ToArray());

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
 using Godot;
 using Steamworks;
@@ -11,8 +10,8 @@ namespace facepunchsteamworkstest.core.domain.steam_multiplayer;
 public class GodotSocketManager : SocketManager
 {
     // Sockets
-    public Dictionary<int, Connection> Peers { get; set; } = new();
-    public Dictionary<Connection, int> ReversePeers { get; set; } = new();
+    public Dictionary<uint, Connection> Peers { get; set; } = new();
+    public Dictionary<Connection, uint> ReversePeers { get; set; } = new();
     
     public SteamMultiplayerPeer Peer { get; set; }
     
@@ -25,7 +24,7 @@ public class GodotSocketManager : SocketManager
     
     public override void OnConnected(Connection connection, ConnectionInfo info)
     {
-        var peerId = (int)(info.Identity.SteamId.Value & 0xffffffff);
+        var peerId = info.Identity.SteamId.AccountId;
         Peers.Add(peerId, connection);
         ReversePeers.Add(connection, peerId);
 
